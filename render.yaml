@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: vehibot-n8n
+    env: docker
+    plan: starter
+    region: oregon
+    runtime:
+      dockerfilePath: ./Dockerfile
+    disk:
+      name: n8n-data
+      mountPath: /home/node/.n8n
+      sizeGB: 5
+    healthCheckPath: /
+    autoDeploy: true
+    buildCommand: ""
+    startCommand: >
+      sh -c "export N8N_PORT=$PORT &&
+             export N8N_PROTOCOL=https &&
+             n8n"
+    envVars:
+      - key: GENERIC_TIMEZONE
+        value: America/Sao_Paulo
+      - key: N8N_HOST
+        value: vehibot.bjlcartransportes.com.br
+      - key: WEBHOOK_URL
+        value: https://vehibot.bjlcartransportes.com.br/
+      - key: N8N_EDITOR_BASE_URL
+        value: https://vehibot.bjlcartransportes.com.br/
+      - key: N8N_ENCRYPTION_KEY
+        sync: false
+      - key: N8N_DISABLE_PRODUCTION_MAIN_PROCESS
+        value: "true"
+      - key: EXECUTIONS_DATA_SAVE_ON_SUCCESS
+        value: "none"
+      - key: EXECUTIONS_DATA_SAVE_ON_ERROR
+        value: "all"
+      - key: EXECUTIONS_MODE
+        value: "regular"
